@@ -29,49 +29,12 @@ jobs:
           mkdir -p /tmp/local_coursetranslate
           unzip -q /tmp/local_coursetranslate.zip -d /tmp/local_coursetranslate
 
+          rm -rf /tmp/local_coursetranslate/local_coursetranslate/.github
           cp -a /tmp/local_coursetranslate/local_coursetranslate/. .
 
           curl -fsSL https://raw.githubusercontent.com/EduardoKrausME/moodle-local_ai_bridge/master/LICENSE -o LICENSE
-          mkdir -p .github/workflows
-          curl -fsSL https://raw.githubusercontent.com/EduardoKrausME/moodle-local_ai_bridge/master/.github/workflows/ci.yml -o .github/workflows/ci.yml
-          curl -fsSL https://raw.githubusercontent.com/EduardoKrausME/moodle-local_ai_bridge/master/.github/workflows/release.yml -o .github/workflows/release.yml
-
-          python - <<'PY'
-          from pathlib import Path
-
-          path = Path(".github/workflows/ci.yml")
-          text = path.read_text()
-
-          anchor = """    - name: Setup PHP ${{ matrix.config.php }}
-          uses: shivammathur/setup-php@v2
-          """
-          dependency = """    - name: Check out local_ai_bridge dependency
-          uses: actions/checkout@v4
-          with:
-            repository: EduardoKrausME/moodle-local_ai_bridge
-            ref: master
-            path: extra-plugins/local_ai_bridge
-
-          """
-          if "Check out local_ai_bridge dependency" not in text:
-              text = text.replace(anchor, dependency + anchor)
-
-          text = text.replace(
-              "moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1",
-              "moodle-plugin-ci install --plugin ./plugin --extra-plugins ./extra-plugins --db-host=127.0.0.1",
-          )
-          path.write_text(text)
-
-          path = Path(".github/workflows/release.yml")
-          text = path.read_text()
-          text = text.replace("local_ai_bridge", "local_coursetranslate")
-          text = text.replace("package/ai_bridge", "package/coursetranslate")
-          text = text.replace("> ai_bridge", "> coursetranslate")
-          path.write_text(text)
-          PY
 
           rm -rf .bootstrap
-          rm -f .github/workflows/assemble.yml
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
