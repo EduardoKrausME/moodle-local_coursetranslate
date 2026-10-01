@@ -30,8 +30,8 @@ use moodle_exception;
  */
 final class job_service_test extends advanced_testcase {
     /**
-    * Terminology parser accepts UTF-8 and equals signs inside target value.
-    */
+     * Terminology parser accepts UTF-8 and equals signs inside target value.
+     */
     public function test_parse_terminology(): void {
         $terms = job_service::parse_terminology("Learner = Aluno\nEquation = x = y");
         $this->assertSame('Aluno', $terms['Learner']);
