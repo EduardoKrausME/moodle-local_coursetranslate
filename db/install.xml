@@ -8,8 +8,8 @@
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-                <FIELD NAME="sourcelang" TYPE="char" LENGTH="32" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-                <FIELD NAME="targetlang" TYPE="char" LENGTH="32" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="sourcelang" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="targetlang" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="terminology" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
                 <FIELD NAME="optionsjson" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="draft" SEQUENCE="false"/>
@@ -31,14 +31,14 @@
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="jobid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-                <FIELD NAME="localkey" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-                <FIELD NAME="component" TYPE="char" LENGTH="100" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-                <FIELD NAME="itemtype" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-                <FIELD NAME="sourcetable" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="localkey" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="component" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="itemtype" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="sourcetable" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="sourceid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-                <FIELD NAME="fieldname" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="fieldname" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="contentformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-                <FIELD NAME="sourcehash" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="sourcehash" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="sourcevalue" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="translatedhash" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false"/>
                 <FIELD NAME="translatedvalue" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
