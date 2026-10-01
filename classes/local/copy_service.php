@@ -41,8 +41,8 @@ class copy_service {
      * @return array{courseid:int,applied:int,skipped:int}
      */
     public function create(
-        int    $jobid,
-        array  $itemids,
+        int $jobid,
+        array $itemids,
         string $fullname,
         string $shortname
     ): array {

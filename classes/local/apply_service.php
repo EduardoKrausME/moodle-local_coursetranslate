@@ -56,9 +56,9 @@ class apply_service {
      */
     public function apply_to_course(
         stdClass $job,
-        array     $itemids,
-        int       $targetcourseid,
-        bool      $requirefreshsource
+        array $itemids,
+        int $targetcourseid,
+        bool $requirefreshsource
     ): array {
         global $CFG, $DB;
 

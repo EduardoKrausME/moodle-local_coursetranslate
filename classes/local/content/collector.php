@@ -378,9 +378,9 @@ class collector {
     private function collect_question(
         array     &$items,
         stdClass $question,
-        string    $questionpath,
-        string    $label,
-        int       $cmid
+        string $questionpath,
+        string $label,
+        int $cmid
     ): void {
         global $DB;
 
@@ -547,9 +547,9 @@ class collector {
     private function collect_glossary_entries(
         array     &$items,
         stdClass $glossary,
-        string    $modulepath,
-        string    $displayname,
-        int       $cmid
+        string $modulepath,
+        string $displayname,
+        int $cmid
     ): void {
         global $DB;
 
