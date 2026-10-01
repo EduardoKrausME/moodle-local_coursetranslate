@@ -66,7 +66,11 @@ $jobs = $DB->get_records('local_coursetranslate_job', ['courseid' => $courseid],
 if ($jobs) {
     echo $OUTPUT->heading(get_string('job', 'local_coursetranslate'), 3);
     $table = new html_table();
-    $table->head = [get_string('targetlang', 'local_coursetranslate'), get_string('status', 'local_coursetranslate'), get_string('timecreated')];
+    $table->head = [
+        get_string('targetlang', 'local_coursetranslate'),
+        get_string('status', 'local_coursetranslate'),
+        get_string('timecreated'),
+    ];
     foreach ($jobs as $job) {
         $url = new moodle_url('/local/coursetranslate/view.php', ['id' => $job->id]);
         $table->data[] = [
