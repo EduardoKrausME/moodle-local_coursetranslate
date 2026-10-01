@@ -117,7 +117,12 @@ class protector {
 
         foreach ($expected as $token) {
             if (substr_count($translated, $token) !== 1) {
-                throw new moodle_exception('protectionerror', 'local_coursetranslate', '', 'missing or duplicated token ' . $token);
+                throw new moodle_exception(
+                'protectionerror',
+                'local_coursetranslate',
+                '',
+                'missing or duplicated token ' . $token
+            );
             }
         }
         foreach ($found as $token) {
