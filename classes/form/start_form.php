@@ -28,7 +28,9 @@ use Throwable;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class start_form extends moodleform {
-    /** Define form. */
+    /**
+     * Define the translation job form.
+     */
     protected function definition(): void {
         $mform = $this->_form;
         $langs = job_service::language_options();
