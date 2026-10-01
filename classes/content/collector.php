@@ -142,7 +142,7 @@ class collector {
     private function module_path(cm_info $cm, int $sectionnum, int $position): string {
         $structure = 'section/' . $sectionnum . '/position/' . $position . '/' . $cm->modname;
         if (trim((string)$cm->idnumber) !== '') {
-            // idnumber is useful as an additional anchor, but Moodle does not
+            // Idnumber is useful as an additional anchor, but Moodle does not
             // guarantee that course-module idnumbers are globally unique. Keep
             // structural coordinates too so duplicate idnumbers cannot collide.
             return 'module/idnumber/' . rawurlencode((string)$cm->idnumber) . '/' . $structure;
@@ -376,7 +376,7 @@ class collector {
      * @return void
      */
     private function collect_question(
-        array     &$items,
+        array &$items,
         stdClass $question,
         string $questionpath,
         string $label,
@@ -545,7 +545,7 @@ class collector {
      * @return void
      */
     private function collect_glossary_entries(
-        array     &$items,
+        array &$items,
         stdClass $glossary,
         string $modulepath,
         string $displayname,
