@@ -238,7 +238,7 @@ class translator {
      */
     public static function parse_response(string $text): array {
         $text = trim($text);
-        if (preg_match('/^```(?:json)?\s*(.*?)\s*```$/isu', $text, $matches)) {
+        if (preg_match('/^\x60{3}(?:json)?\s*(.*?)\s*\x60{3}$/isu', $text, $matches)) {
             $text = trim($matches[1]);
         }
         if (!str_starts_with($text, '{') || !str_ends_with($text, '}')) {
