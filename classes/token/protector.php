@@ -55,7 +55,7 @@ class protector {
         foreach ([
                      '/<pre\b[^>]*>.*?<\/pre>/isu',
                      '/<code\b[^>]*>.*?<\/code>/isu',
-                     '/```.*?```/su',
+                     '/\\x60{3}.*?\\x60{3}/su',
                      '/`[^`\r\n]+`/u',
                      '/\$\$.*?\$\$/su',
                      '/\\\(.*?\\\)/su',
@@ -155,7 +155,12 @@ class protector {
             str_contains($translated, '@@PLUGINFILE@@') ||
             str_contains($translated, '{{') ||
             str_contains($translated, '[[')) {
-            throw new moodle_exception('protectionerror', 'local_coursetranslate', '', 'unprotected markup, URL or placeholder introduced');
+            throw new moodle_exception(
+                'protectionerror',
+                'local_coursetranslate',
+                '',
+                'unprotected markup, URL or placeholder introduced'
+            );
         }
 
         $replacements = [];
@@ -211,7 +216,7 @@ class protector {
         string $search,
         string $restore,
         string $kind,
-        array  &$state
+        array &$state
     ): string {
         $parts = preg_split('/(' . preg_quote(self::PREFIX, '/') . '\d{6}__)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
         if ($parts === false) {
