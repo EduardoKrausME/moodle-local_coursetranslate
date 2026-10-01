@@ -50,7 +50,9 @@ foreach ($items as $item) {
 }
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('job', 'local_coursetranslate') . ': ' . s($job->sourcelang . ' → ' . $job->targetlang));
+echo $OUTPUT->heading(
+    get_string('job', 'local_coursetranslate') . ': ' . s($job->sourcelang . ' → ' . $job->targetlang)
+);
 echo html_writer::div(
     html_writer::span(get_string('summary:pending', 'local_coursetranslate', $counts['pending']), 'badge text-bg-secondary') . ' ' .
     html_writer::span(get_string('summary:translated', 'local_coursetranslate', $counts['translated']), 'badge text-bg-success') . ' ' .
@@ -102,7 +104,9 @@ foreach ($items as $item) {
         'applied' => 'badge text-bg-info',
         default => 'badge text-bg-secondary',
     };
-    $rowclass = $status === 'outdated' ? 'local-coursetranslate-item-outdated' : ($status === 'failed' ? 'local-coursetranslate-item-error' : '');
+    $rowclass = $status === 'outdated'
+        ? 'local-coursetranslate-item-outdated'
+        : ($status === 'failed' ? 'local-coursetranslate-item-error' : '');
 
     $checkbox = html_writer::empty_tag('input', [
         'type' => 'checkbox', 'name' => 'itemids[]', 'value' => $item->id, 'class' => 'form-check-input',
