@@ -55,7 +55,10 @@ echo $OUTPUT->heading(
 );
 echo html_writer::div(
     html_writer::span(get_string('summary:pending', 'local_coursetranslate', $counts['pending']), 'badge text-bg-secondary') . ' ' .
-    html_writer::span(get_string('summary:translated', 'local_coursetranslate', $counts['translated']), 'badge text-bg-success') . ' ' .
+    html_writer::span(
+        get_string('summary:translated', 'local_coursetranslate', $counts['translated']),
+        'badge text-bg-success'
+    ) . ' ' .
     html_writer::span(get_string('summary:failed', 'local_coursetranslate', $counts['failed']), 'badge text-bg-danger') . ' ' .
     html_writer::span(get_string('summary:outdated', 'local_coursetranslate', $counts['outdated']), 'badge text-bg-warning') . ' ' .
     html_writer::span(get_string('summary:applied', 'local_coursetranslate', $counts['applied']), 'badge text-bg-info'),
