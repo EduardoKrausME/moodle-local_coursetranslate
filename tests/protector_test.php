@@ -29,7 +29,9 @@ use moodle_exception;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 final class protector_test extends advanced_testcase {
-    /** HTML, URL, pluginfile, placeholders and mandatory terminology survive byte-for-byte. */
+    /**
+     * HTML, URL, pluginfile, placeholders and mandatory terminology survive byte-for-byte.
+     */
     public function test_html_pluginfile_url_placeholder_and_terminology(): void {
         $source = '<p class="lead">Learner, open <a href="https://example.org/a?id=7">@@PLUGINFILE@@/Manual.pdf</a> {{name}}</p>';
         $protector = new protector();
@@ -44,7 +46,9 @@ final class protector_test extends advanced_testcase {
         $this->assertStringContainsString('{{name}}', $restored);
     }
 
-    /** Missing tokens invalidate a response instead of silently corrupting content. */
+    /**
+     * Missing tokens invalidate a response instead of silently corrupting content.
+     */
     public function test_missing_token_is_rejected(): void {
         $protector = new protector();
         $payload = $protector->protect('<p>Text <a href="https://example.org">link</a></p>');
@@ -53,7 +57,9 @@ final class protector_test extends advanced_testcase {
         $protector->restore($payload, (string)$bad);
     }
 
-    /** AI cannot inject new markup into a protected HTML field. */
+    /**
+     * AI cannot inject new markup into a protected HTML field.
+     */
     public function test_new_html_is_rejected(): void {
         $protector = new protector();
         $payload = $protector->protect('<p>Hello</p>');
@@ -61,7 +67,9 @@ final class protector_test extends advanced_testcase {
         $protector->restore($payload, $payload['text'] . '<script>alert(1)</script>');
     }
 
-    /** Keeping tag order is not enough if text is moved outside the element. */
+    /**
+     * Keeping tag order is not enough if text is moved outside the element.
+     */
     public function test_text_moved_across_html_boundary_is_rejected(): void {
         $protector = new protector();
         $payload = $protector->protect('<p>Hello</p>');
@@ -71,7 +79,9 @@ final class protector_test extends advanced_testcase {
         $protector->restore($payload, $open . $close . 'Olá');
     }
 
-    /** UTF-8 remains intact. */
+    /**
+     * UTF-8 remains intact.
+     */
     public function test_utf8_round_trip(): void {
         $protector = new protector();
         $payload = $protector->protect('<p>Educação, ação, coração, 日本語 😀</p>');
@@ -79,7 +89,9 @@ final class protector_test extends advanced_testcase {
         $this->assertStringContainsString('Education, ação, coração, 日本語 😀', $restored);
     }
 
-    /** Question-like formulas, code and filenames are protected. */
+    /**
+     * Question-like formulas, code and filenames are protected.
+     */
     public function test_question_formula_code_and_filename_are_preserved(): void {
         $source = '<p>Explain $$E=mc^2$$ and inspect <code>local_ai_bridge::generate()</code> in example.php.</p>';
         $protector = new protector();

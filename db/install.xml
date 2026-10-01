@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/coursetranslate/db" VERSION="2026093000" COMMENT="XMLDB file for local_coursetranslate"
+<XMLDB PATH="local/coursetranslate/db" VERSION="20260930" COMMENT="XMLDB file for local_coursetranslate"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
     <TABLES>

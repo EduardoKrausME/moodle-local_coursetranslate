@@ -32,13 +32,19 @@ use Throwable;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class translator {
-    /** AI Bridge purpose. */
+    /**
+     * AI Bridge purpose.
+     */
     private const PURPOSE = 'coursetranslate-translate';
 
-    /** Maximum number of fields per request. */
+    /**
+     * Maximum number of fields per request.
+     */
     private const MAX_ITEMS = 8;
 
-    /** Approximate protected characters per request. */
+    /**
+     * Approximate protected characters per request.
+     */
     private const MAX_CHARS = 12000;
 
     /**
