@@ -1,27 +1,9 @@
 # local_coursetranslate
 
 `local_coursetranslate` translates the textual structure of a Moodle course while treating Moodle markup and identifiers
-as data that must not be changed. It is designed for Moodle 4.5+ and delegates every AI request to `local_ai_bridge`.
+as data that must not be changed. It is designed for Moodle and delegates every AI request to `local_ai_bridge`.
 
-## Required dependency
-
-Install and configure:
-
-- https://github.com/EduardoKrausME/moodle-local_ai_bridge/
-- minimum version `2026093001`
-- purpose idnumber: `coursetranslate-translate`
-
-The plugin never stores provider API keys and contains no OpenAI, Gemini, Claude, Ollama or other provider-specific
-client. The only AI call is:
-
-```php
-\local_ai_bridge\api::generate('coursetranslate-translate', $messages);
-```
-
-The current user must also be allowed to use AI Bridge and the tenant must expose a route for
-the `coursetranslate-translate` purpose.
-
-## Supported content in the first version
+## Supported content in the plugin
 
 - optional course full name and summary;
 - section names and summaries;
@@ -108,7 +90,7 @@ original course is refused.
 ### Question-bank safety
 
 Question content is fully available for preview and for the translated course copy. Directly applying translated
-question fields back into the original course is intentionally skipped, because Moodle 4.5 question edits are versioned
+question fields back into the original course is intentionally skipped, because Moodle question edits are versioned
 and a raw table update could mutate a definition already referenced by attempts. The translated-copy workflow is safe
 here because Moodle first duplicates the course/question bank into an isolated hidden course and the plugin then updates
 those restored records. Non-question course fields can still be selectively applied to the original after explicit
@@ -150,44 +132,3 @@ user ID on deletion while preserving the course translation work. AI Bridge has 
 
 - `local_coursetranslate_job`: course, creator, language pair, terminology, options and copy reference.
 - `local_coursetranslate_item`: stable key, source snapshot/hash, translated text/hash, state, locator and metadata.
-
-## Tests
-
-PHPUnit tests cover the high-risk pure logic:
-
-- HTML/token round-trip;
-- pluginfile paths;
-- URLs;
-- placeholders and Mustache-like tokens;
-- mandatory terminology;
-- question-like code/formula/filename content;
-- UTF-8;
-- missing token rejection;
-- new HTML injection rejection;
-- valid, fenced, invalid and partial AI JSON responses;
-- terminology parsing.
-
-The GitHub Actions workflow installs the plugin together with `local_ai_bridge`, tests Moodle 4.5 and Moodle 5.2 against
-PostgreSQL and MariaDB, runs PHP lint, `moodle-plugin-ci validate`, PHPUnit and `EduardoKrausME/moodle-plugin-validate`.
-
-## Validation
-
-Useful local checks:
-
-```bash
-find . -name '*.php' -print0 | xargs -0 -n1 php -l
-xmllint --noout db/install.xml
-```
-
-CI installs the real `local_ai_bridge` dependency as an extra plugin and then runs the Moodle test environment plus the
-static validator:
-
-```yaml
-uses: EduardoKrausME/moodle-plugin-validate@main
-with:
-  plugin: ./plugin
-```
-
-## License
-
-GNU GPL v3 or later.
