@@ -43,7 +43,7 @@ final class translator_response_test extends advanced_testcase {
     public function test_fenced_json(): void {
         $fence = str_repeat(chr(96), 3);
         $result = translator::parse_response(
-            $fence . "json\\n{\\\"translations\\\":{\\\"i3\\\":\\\"Teste\\\"}}\\n" . $fence
+            $fence . "json\n{\"translations\":{\"i3\":\"Teste\"}}\n" . $fence
         );
         $this->assertSame(['i3' => 'Teste'], $result);
     }
