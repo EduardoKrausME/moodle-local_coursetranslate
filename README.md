@@ -29,7 +29,7 @@ stable question definition.
 2. Choose source and target languages.
 3. Choose whether course full name/summary and teacher-managed glossary entries are included.
 4. Optionally provide required terminology using `Source = Target`, one mapping per line.
-5. Create the job. This only snapshots supported course fields; it does not call AI yet.
+5. Create the job. This only snapshots selected course fields; it does not call AI yet.
 6. Translate pending fields or select specific fields and translate them.
 7. Review original, translation and status side by side.
 8. Either create a translated copy or explicitly confirm selected updates to the original course.
@@ -81,7 +81,7 @@ the required target term. For example, `Learner = Aluno` deterministically resto
 Each item stores a SHA-256 hash of the exact source field. The course is rescanned before preview status, retranslation
 and application. A field is shown as changed/outdated when its current hash no longer matches the translation snapshot.
 
-This rescan matters especially for the question bank, where editing a question can create a new question version with a
+This rescan matters especially for the question bank, where editing a question can create a new question revision with a
 different database ID. The plugin resolves the current quiz slot again instead of trusting the old question ID.
 
 Selecting an outdated field for translation refreshes its source snapshot first. Applying an outdated translation to the
