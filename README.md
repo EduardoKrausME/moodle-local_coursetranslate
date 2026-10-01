@@ -3,7 +3,7 @@
 `local_coursetranslate` translates the textual structure of a Moodle course while treating Moodle markup and identifiers
 as data that must not be changed. It is designed for Moodle and delegates every AI request to `local_ai_bridge`.
 
-## Supported content in the plugin
+## Content translated
 
 - optional course full name and summary;
 - section names and summaries;
