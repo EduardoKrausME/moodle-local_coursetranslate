@@ -1,10 +1,25 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace local_coursetranslate\local;
 
 use local_coursetranslate\local\content\collector;
 use moodle_exception;
+use question_bank;
+use stdClass;
 
 /**
  * Controlled writer for translated fields.
@@ -33,17 +48,17 @@ class apply_service {
     /**
      * Apply selected items to a destination course.
      *
-     * @param \stdClass $job Job.
+     * @param stdClass $job Job.
      * @param array<int> $itemids Source job item ids.
      * @param int $targetcourseid Target course id.
      * @param bool $requirefreshsource Whether original source must still equal snapshot.
      * @return array{applied:int,skipped:int}
      */
     public function apply_to_course(
-        \stdClass $job,
-        array $itemids,
-        int $targetcourseid,
-        bool $requirefreshsource
+        stdClass $job,
+        array     $itemids,
+        int       $targetcourseid,
+        bool      $requirefreshsource
     ): array {
         global $CFG, $DB;
 
@@ -109,7 +124,7 @@ class apply_service {
         if ($questionids) {
             require_once($CFG->dirroot . '/question/engine/bank.php');
             foreach (array_keys($questionids) as $questionid) {
-                \question_bank::notify_question_edited($questionid);
+                question_bank::notify_question_edited($questionid);
             }
         }
         rebuild_course_cache($targetcourseid, true);
@@ -119,11 +134,11 @@ class apply_service {
     /**
      * Check selected source items are still fresh before a course copy starts.
      *
-     * @param \stdClass $job Job.
+     * @param stdClass $job Job.
      * @param array<int> $itemids Item ids.
      * @return array<int> Fresh item ids.
      */
-    public function fresh_itemids(\stdClass $job, array $itemids): array {
+    public function fresh_itemids(stdClass $job, array $itemids): array {
         $selection = array_fill_keys(array_map('intval', $itemids), true);
         $currentmap = job_service::current_map($job);
         $fresh = [];
@@ -159,6 +174,13 @@ class apply_service {
             || str_starts_with($table, 'qtype_');
     }
 
+    /**
+     * Method is_allowed.
+     *
+     * @param string $table Parameter table.
+     * @param string $field Parameter field.
+     * @return bool Return value.
+     */
     private function is_allowed(string $table, string $field): bool {
         $allowed = [
             'course' => ['fullname', 'summary'],

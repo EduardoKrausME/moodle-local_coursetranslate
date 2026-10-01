@@ -1,10 +1,33 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * view.php
+ *
+ * @package   local_coursetranslate
+ * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+use local_coursetranslate\local\job_service;
 
 require_once(__DIR__ . '/../../config.php');
 
 $jobid = required_param('id', PARAM_INT);
-$job = \local_coursetranslate\local\job_service::get_job($jobid);
+$job = job_service::get_job($jobid);
 $course = get_course($job->courseid);
 $context = context_course::instance($course->id);
 require_login($course);
@@ -16,12 +39,12 @@ $PAGE->set_url(new moodle_url('/local/coursetranslate/view.php', ['id' => $jobid
 $PAGE->set_title(get_string('job', 'local_coursetranslate'));
 $PAGE->set_heading(format_string($course->fullname));
 
-$items = \local_coursetranslate\local\job_service::get_items($jobid);
-$currentmap = \local_coursetranslate\local\job_service::current_map($job);
+$items = job_service::get_items($jobid);
+$currentmap = job_service::current_map($job);
 $counts = ['pending' => 0, 'translated' => 0, 'failed' => 0, 'outdated' => 0, 'applied' => 0, 'missing' => 0];
 $statusmap = [];
 foreach ($items as $item) {
-    $status = \local_coursetranslate\local\job_service::display_status($item, $currentmap[$item->localkey] ?? null);
+    $status = job_service::display_status($item, $currentmap[$item->localkey] ?? null);
     $statusmap[$item->id] = $status;
     $counts[$status] = ($counts[$status] ?? 0) + 1;
 }

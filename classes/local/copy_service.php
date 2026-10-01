@@ -1,10 +1,27 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace local_coursetranslate\local;
 
 use context_course;
+use context_coursecat;
+use core_course_external;
+use core_text;
 use moodle_exception;
+use stdClass;
 
 /**
  * Create a hidden Moodle course duplicate and apply translated fields to it.
@@ -24,8 +41,8 @@ class copy_service {
      * @return array{courseid:int,applied:int,skipped:int}
      */
     public function create(
-        int $jobid,
-        array $itemids,
+        int    $jobid,
+        array  $itemids,
         string $fullname,
         string $shortname
     ): array {
@@ -33,7 +50,7 @@ class copy_service {
 
         $job = job_service::get_job($jobid);
         $sourcecourse = $DB->get_record('course', ['id' => $job->courseid], '*', MUST_EXIST);
-        require_capability('moodle/course:create', \context_coursecat::instance($sourcecourse->category));
+        require_capability('moodle/course:create', context_coursecat::instance($sourcecourse->category));
         require_capability('moodle/backup:backupcourse', context_course::instance($sourcecourse->id));
 
         $fullname = trim(clean_param($fullname, PARAM_TEXT));
@@ -52,7 +69,7 @@ class copy_service {
         }
 
         require_once($CFG->dirroot . '/course/externallib.php');
-        $result = \core_course_external::duplicate_course(
+        $result = core_course_external::duplicate_course(
             (int)$sourcecourse->id,
             $fullname,
             $shortname,
@@ -84,19 +101,19 @@ class copy_service {
     /**
      * Suggest a unique shortname for a target language.
      *
-     * @param \stdClass $course Source course.
+     * @param stdClass $course Source course.
      * @param string $targetlang Target language.
      * @return string
      */
-    public static function suggest_shortname(\stdClass $course, string $targetlang): string {
+    public static function suggest_shortname(stdClass $course, string $targetlang): string {
         global $DB;
 
         $base = trim((string)$course->shortname) . '-' . $targetlang;
-        $base = \core_text::substr($base, 0, 240);
+        $base = core_text::substr($base, 0, 240);
         $candidate = $base;
         $counter = 2;
         while ($DB->record_exists('course', ['shortname' => $candidate])) {
-            $candidate = \core_text::substr($base, 0, 235) . '-' . $counter++;
+            $candidate = core_text::substr($base, 0, 235) . '-' . $counter++;
         }
         return $candidate;
     }
@@ -104,10 +121,10 @@ class copy_service {
     /**
      * Suggest a translated fullname if the job contains one.
      *
-     * @param \stdClass $job Job.
+     * @param stdClass $job Job.
      * @return string
      */
-    public static function suggest_fullname(\stdClass $job): string {
+    public static function suggest_fullname(stdClass $job): string {
         global $DB;
 
         foreach (job_service::get_items((int)$job->id) as $item) {

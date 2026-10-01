@@ -1,5 +1,18 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace local_coursetranslate\local\token;
 
@@ -38,14 +51,14 @@ class protector {
 
         // Entire code-like blocks first, before generic HTML tags.
         foreach ([
-            '/<pre\b[^>]*>.*?<\/pre>/isu',
-            '/<code\b[^>]*>.*?<\/code>/isu',
-            '/```.*?```/su',
-            '/`[^`\r\n]+`/u',
-            '/\$\$.*?\$\$/su',
-            '/\\\(.*?\\\)/su',
-            '/\\\[.*?\\\]/su',
-        ] as $pattern) {
+                     '/<pre\b[^>]*>.*?<\/pre>/isu',
+                     '/<code\b[^>]*>.*?<\/code>/isu',
+                     '/```.*?```/su',
+                     '/`[^`\r\n]+`/u',
+                     '/\$\$.*?\$\$/su',
+                     '/\\\(.*?\\\)/su',
+                     '/\\\[.*?\\\]/su',
+                 ] as $pattern) {
             $protected = $this->replace_pattern($protected, $pattern, 'code', $state);
         }
 
@@ -55,19 +68,19 @@ class protector {
 
         // Moodle/file/link constructs outside tags.
         foreach ([
-            '/@@PLUGINFILE@@(?:\/[^\s"\'<>)]*)?/u',
-            '/https?:\/\/[^\s"\'<>]+/iu',
-            '/\bwww\.[^\s"\'<>]+/iu',
-            '/\[\[[^\]\r\n]+\]\]/u',
-            '/\{\/?mlang(?:\s+[^}]*)?\}/iu',
-            '/\{\{\{.*?\}\}\}/su',
-            '/\{\{.*?\}\}/su',
-            '/\$a(?:->[A-Za-z_][A-Za-z0-9_]*)?/u',
-            '/%(?:\d+\$)?[bcdeEfFgGosuxX]/u',
-            '/\{[A-Za-z_][A-Za-z0-9_.:\-]*\}/u',
-            '/\b[A-Za-z_][A-Za-z0-9_]*::[A-Za-z_][A-Za-z0-9_]*\b/u',
-            '/(?<![\w.])[A-Za-z0-9][A-Za-z0-9._-]*\.(?:pdf|docx?|xlsx?|pptx?|odt|ods|odp|zip|rar|7z|tar|gz|png|jpe?g|gif|svg|webp|mp[34]|m4a|wav|ogg|webm|csv|json|xml|html?|php|js|css|scss|sql)(?![\w.])/iu',
-        ] as $pattern) {
+                     '/@@PLUGINFILE@@(?:\/[^\s"\'<>)]*)?/u',
+                     '/https?:\/\/[^\s"\'<>]+/iu',
+                     '/\bwww\.[^\s"\'<>]+/iu',
+                     '/\[\[[^\]\r\n]+\]\]/u',
+                     '/\{\/?mlang(?:\s+[^}]*)?\}/iu',
+                     '/\{\{\{.*?\}\}\}/su',
+                     '/\{\{.*?\}\}/su',
+                     '/\$a(?:->[A-Za-z_][A-Za-z0-9_]*)?/u',
+                     '/%(?:\d+\$)?[bcdeEfFgGosuxX]/u',
+                     '/\{[A-Za-z_][A-Za-z0-9_.:\-]*\}/u',
+                     '/\b[A-Za-z_][A-Za-z0-9_]*::[A-Za-z_][A-Za-z0-9_]*\b/u',
+                     '/(?<![\w.])[A-Za-z0-9][A-Za-z0-9._-]*\.(?:pdf|docx?|xlsx?|pptx?|odt|ods|odp|zip|rar|7z|tar|gz|png|jpe?g|gif|svg|webp|mp[34]|m4a|wav|ogg|webm|csv|json|xml|html?|php|js|css|scss|sql)(?![\w.])/iu',
+                 ] as $pattern) {
             $protected = $this->replace_pattern($protected, $pattern, 'literal', $state);
         }
 
@@ -119,7 +132,7 @@ class protector {
             throw new moodle_exception('protectionerror', 'local_coursetranslate', '', 'HTML tag order changed');
         }
         if ($this->tag_region_signature($payload['text'], $payload['tagtokens']) !==
-                $this->tag_region_signature($translated, $payload['tagtokens'])) {
+            $this->tag_region_signature($translated, $payload['tagtokens'])) {
             throw new moodle_exception('protectionerror', 'local_coursetranslate', '', 'text moved across HTML boundaries');
         }
         foreach ($payload['tokens'] as $token => $data) {
@@ -127,7 +140,7 @@ class protector {
                 continue;
             }
             if ($this->tag_region_index($payload['text'], $token, $payload['tagtokens']) !==
-                    $this->tag_region_index($translated, $token, $payload['tagtokens'])) {
+                $this->tag_region_index($translated, $token, $payload['tagtokens'])) {
                 throw new moodle_exception('protectionerror', 'local_coursetranslate', '',
                     'protected token moved across HTML boundaries: ' . $token);
             }
@@ -135,11 +148,11 @@ class protector {
 
         // New markup/URLs/placeholders are not accepted. Original ones are currently tokens.
         if (preg_match('/<\/?[A-Za-z][^>]*>/u', $translated) ||
-                preg_match('/https?:\/\//iu', $translated) ||
-                preg_match('/\bwww\./iu', $translated) ||
-                str_contains($translated, '@@PLUGINFILE@@') ||
-                str_contains($translated, '{{') ||
-                str_contains($translated, '[[')) {
+            preg_match('/https?:\/\//iu', $translated) ||
+            preg_match('/\bwww\./iu', $translated) ||
+            str_contains($translated, '@@PLUGINFILE@@') ||
+            str_contains($translated, '{{') ||
+            str_contains($translated, '[[')) {
             throw new moodle_exception('protectionerror', 'local_coursetranslate', '', 'unprotected markup, URL or placeholder introduced');
         }
 
@@ -173,7 +186,7 @@ class protector {
             if (preg_match('/^' . preg_quote(self::PREFIX, '/') . '\d{6}__$/', $part)) {
                 continue;
             }
-            $part = preg_replace_callback($pattern, function(array $matches) use ($kind, &$state): string {
+            $part = preg_replace_callback($pattern, function (array $matches) use ($kind, &$state): string {
                 return $this->new_token($matches[0], $matches[0], $kind, $state);
             }, $part) ?? $part;
         }
@@ -196,7 +209,7 @@ class protector {
         string $search,
         string $restore,
         string $kind,
-        array &$state
+        array  &$state
     ): string {
         $parts = preg_split('/(' . preg_quote(self::PREFIX, '/') . '\d{6}__)/', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
         if ($parts === false) {

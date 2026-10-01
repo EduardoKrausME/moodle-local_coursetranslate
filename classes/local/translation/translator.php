@@ -1,11 +1,27 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace local_coursetranslate\local\translation;
 
+use core_text;
+use local_ai_bridge\api;
 use local_coursetranslate\local\job_service;
 use local_coursetranslate\local\token\protector;
 use moodle_exception;
+use stdClass;
 use Throwable;
 
 /**
@@ -99,12 +115,12 @@ class translator {
     /**
      * Translate one bounded request.
      *
-     * @param \stdClass $job Job.
+     * @param stdClass $job Job.
      * @param array $batch Prepared items.
      * @param protector $protector Token protector.
      * @return array{translated:int,failed:int,partial:bool}
      */
-    private function translate_batch(\stdClass $job, array $batch, protector $protector): array {
+    private function translate_batch(stdClass $job, array $batch, protector $protector): array {
         global $DB;
 
         $input = [];
@@ -119,7 +135,7 @@ class translator {
         $prompt = $this->build_prompt($job, $input, $terms);
 
         try {
-            $response = \local_ai_bridge\api::generate(self::PURPOSE, [
+            $response = api::generate(self::PURPOSE, [
                 ['role' => 'user', 'content' => $prompt],
             ]);
             $translations = self::parse_response((string)$response->text);
@@ -163,12 +179,12 @@ class translator {
     /**
      * Build a deterministic JSON-only translation prompt.
      *
-     * @param \stdClass $job Job.
+     * @param stdClass $job Job.
      * @param array $input Protected fields.
      * @param array $terms Required terminology.
      * @return string
      */
-    private function build_prompt(\stdClass $job, array $input, array $terms): string {
+    private function build_prompt(stdClass $job, array $input, array $terms): string {
         $payload = json_encode($input, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
         $termjson = json_encode($terms, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         return "Translate the supplied Moodle course fields from {$job->sourcelang} to {$job->targetlang}.\n"
@@ -245,14 +261,14 @@ class translator {
     /**
      * Mark one item failed.
      *
-     * @param \stdClass $item Item.
+     * @param stdClass $item Item.
      * @param string $message Error message.
      * @return void
      */
-    private function fail_item(\stdClass $item, string $message): void {
+    private function fail_item(stdClass $item, string $message): void {
         global $DB;
         $item->state = 'failed';
-        $item->errormessage = \core_text::substr($message, 0, 4000);
+        $item->errormessage = core_text::substr($message, 0, 4000);
         $item->timemodified = time();
         $DB->update_record('local_coursetranslate_item', $item);
     }

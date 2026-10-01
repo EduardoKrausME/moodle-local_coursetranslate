@@ -1,11 +1,25 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace local_coursetranslate\local;
 
 use context_course;
 use local_coursetranslate\local\content\collector;
 use moodle_exception;
+use stdClass;
 
 /**
  * Translation job persistence and snapshot management.
@@ -96,9 +110,9 @@ class job_service {
      * Get one job and enforce course capability.
      *
      * @param int $jobid Job id.
-     * @return \stdClass
+     * @return stdClass
      */
-    public static function get_job(int $jobid): \stdClass {
+    public static function get_job(int $jobid): stdClass {
         global $DB;
 
         $job = $DB->get_record('local_coursetranslate_job', ['id' => $jobid], '*', MUST_EXIST);
@@ -109,10 +123,10 @@ class job_service {
     /**
      * Get job options.
      *
-     * @param \stdClass $job Job.
+     * @param stdClass $job Job.
      * @return array
      */
-    public static function options(\stdClass $job): array {
+    public static function options(stdClass $job): array {
         $options = json_decode((string)$job->optionsjson, true);
         return is_array($options) ? $options : [];
     }
@@ -120,10 +134,10 @@ class job_service {
     /**
      * Get mandatory terminology.
      *
-     * @param \stdClass $job Job.
+     * @param stdClass $job Job.
      * @return array
      */
-    public static function terminology(\stdClass $job): array {
+    public static function terminology(stdClass $job): array {
         $terms = json_decode((string)$job->terminology, true);
         return is_array($terms) ? $terms : [];
     }
@@ -132,7 +146,7 @@ class job_service {
      * Get items for a job.
      *
      * @param int $jobid Job id.
-     * @return array<int,\stdClass>
+     * @return array<int,stdClass>
      */
     public static function get_items(int $jobid): array {
         global $DB;
@@ -142,11 +156,11 @@ class job_service {
     /**
      * Recollect the current course and index descriptors by stable local key.
      *
-     * @param \stdClass $job Job.
+     * @param stdClass $job Job.
      * @param int|null $courseid Alternate course, e.g. translated copy.
      * @return array<string,array>
      */
-    public static function current_map(\stdClass $job, ?int $courseid = null): array {
+    public static function current_map(stdClass $job, ?int $courseid = null): array {
         $collector = new collector();
         return $collector->collect($courseid ?? (int)$job->courseid, self::options($job));
     }
@@ -154,11 +168,11 @@ class job_service {
     /**
      * Compute current display status of a stored item.
      *
-     * @param \stdClass $item Stored item.
+     * @param stdClass $item Stored item.
      * @param array|null $current Current descriptor.
      * @return string
      */
-    public static function display_status(\stdClass $item, ?array $current): string {
+    public static function display_status(stdClass $item, ?array $current): string {
         if ($current === null) {
             return 'missing';
         }
@@ -178,11 +192,11 @@ class job_service {
      * This is used immediately before (re)translation, so an edited source field
      * does not accidentally send an obsolete snapshot to the AI.
      *
-     * @param \stdClass $item Stored item.
+     * @param stdClass $item Stored item.
      * @param array $descriptor Current descriptor.
-     * @return \stdClass Updated item.
+     * @return stdClass Updated item.
      */
-    public static function refresh_item(\stdClass $item, array $descriptor): \stdClass {
+    public static function refresh_item(stdClass $item, array $descriptor): stdClass {
         global $DB;
 
         $metadata = $descriptor['metadata'];

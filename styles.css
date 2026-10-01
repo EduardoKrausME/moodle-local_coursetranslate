@@ -4,9 +4,11 @@
     gap: .5rem;
     margin: 1rem 0;
 }
+
 .local-coursetranslate-summary .badge {
     font-size: .9rem;
 }
+
 .local-coursetranslate-preview {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
@@ -17,9 +19,11 @@
     border-radius: .25rem;
     background: var(--bs-tertiary-bg, #f8f9fa);
 }
+
 .local-coursetranslate-item-outdated {
     border-left: .25rem solid var(--bs-warning, #ffc107);
 }
+
 .local-coursetranslate-item-error {
     border-left: .25rem solid var(--bs-danger, #dc3545);
 }

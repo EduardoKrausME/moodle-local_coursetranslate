@@ -1,61 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <XMLDB PATH="local/coursetranslate/db" VERSION="2026093000" COMMENT="XMLDB file for local_coursetranslate"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
-  <TABLES>
-    <TABLE NAME="local_coursetranslate_job" COMMENT="Course translation jobs and their configuration">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="sourcelang" TYPE="char" LENGTH="32" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-        <FIELD NAME="targetlang" TYPE="char" LENGTH="32" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-        <FIELD NAME="terminology" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="optionsjson" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="draft" SEQUENCE="false"/>
-        <FIELD NAME="copycourseid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="coursefk" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id" ONDELETE="cascade"/>
-      </KEYS>
-      <INDEXES>
-        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
-        <INDEX NAME="courseidstatus" UNIQUE="false" FIELDS="courseid,status"/>
-      </INDEXES>
-    </TABLE>
-    <TABLE NAME="local_coursetranslate_item" COMMENT="Individual translatable fields captured in a translation job">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="jobid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="localkey" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-        <FIELD NAME="component" TYPE="char" LENGTH="100" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-        <FIELD NAME="itemtype" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-        <FIELD NAME="sourcetable" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-        <FIELD NAME="sourceid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="fieldname" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-        <FIELD NAME="contentformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="sourcehash" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
-        <FIELD NAME="sourcevalue" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="translatedhash" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="translatedvalue" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="state" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="pending" SEQUENCE="false"/>
-        <FIELD NAME="errormessage" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="locatorjson" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="metadatajson" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="jobfk" TYPE="foreign" FIELDS="jobid" REFTABLE="local_coursetranslate_job" REFFIELDS="id" ONDELETE="cascade"/>
-      </KEYS>
-      <INDEXES>
-        <INDEX NAME="joblocalkey" UNIQUE="true" FIELDS="jobid,localkey"/>
-        <INDEX NAME="jobstate" UNIQUE="false" FIELDS="jobid,state"/>
-      </INDEXES>
-    </TABLE>
-  </TABLES>
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
+    <TABLES>
+        <TABLE NAME="local_coursetranslate_job" COMMENT="Course translation jobs and their configuration">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="sourcelang" TYPE="char" LENGTH="32" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="targetlang" TYPE="char" LENGTH="32" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="terminology" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="optionsjson" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="draft" SEQUENCE="false"/>
+                <FIELD NAME="copycourseid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="coursefk" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"
+                     ONDELETE="cascade"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+                <INDEX NAME="courseidstatus" UNIQUE="false" FIELDS="courseid,status"/>
+            </INDEXES>
+        </TABLE>
+        <TABLE NAME="local_coursetranslate_item" COMMENT="Individual translatable fields captured in a translation job">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="jobid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="localkey" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="component" TYPE="char" LENGTH="100" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="itemtype" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="sourcetable" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="sourceid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="fieldname" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="contentformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="sourcehash" TYPE="char" LENGTH="64" NOTNULL="true" DEFAULT="" SEQUENCE="false"/>
+                <FIELD NAME="sourcevalue" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="translatedhash" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="translatedvalue" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="state" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="pending" SEQUENCE="false"/>
+                <FIELD NAME="errormessage" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="locatorjson" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="metadatajson" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="jobfk" TYPE="foreign" FIELDS="jobid" REFTABLE="local_coursetranslate_job" REFFIELDS="id"
+                     ONDELETE="cascade"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="joblocalkey" UNIQUE="true" FIELDS="jobid,localkey"/>
+                <INDEX NAME="jobstate" UNIQUE="false" FIELDS="jobid,state"/>
+            </INDEXES>
+        </TABLE>
+    </TABLES>
 </XMLDB>

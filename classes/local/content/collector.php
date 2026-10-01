@@ -1,10 +1,25 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace local_coursetranslate\local\content;
 
+use cm_info;
 use context_module;
 use coding_exception;
+use stdClass;
 
 /**
  * Collect supported, course-authored textual fields without touching learner data.
@@ -119,12 +134,12 @@ class collector {
     /**
      * Build a path that survives a same-site course copy.
      *
-     * @param \cm_info $cm Course module info.
+     * @param cm_info $cm Course module info.
      * @param int $sectionnum Section number.
      * @param int $position Position inside section sequence.
      * @return string
      */
-    private function module_path(\cm_info $cm, int $sectionnum, int $position): string {
+    private function module_path(cm_info $cm, int $sectionnum, int $position): string {
         $structure = 'section/' . $sectionnum . '/position/' . $position . '/' . $cm->modname;
         if (trim((string)$cm->idnumber) !== '') {
             // idnumber is useful as an additional anchor, but Moodle does not
@@ -140,12 +155,12 @@ class collector {
      *
      * @param array $items Result accumulator.
      * @param int $courseid Course id.
-     * @param \cm_info $cm Course module.
+     * @param cm_info $cm Course module.
      * @param string $modulepath Stable module path.
      * @param array $options Job options.
      * @return void
      */
-    private function collect_module(array &$items, int $courseid, \cm_info $cm, string $modulepath, array $options): void {
+    private function collect_module(array &$items, int $courseid, cm_info $cm, string $modulepath, array $options): void {
         global $DB;
 
         $table = $cm->modname;
@@ -212,13 +227,13 @@ class collector {
      * Collect Book chapters.
      *
      * @param array $items Result accumulator.
-     * @param \stdClass $book Book record.
+     * @param stdClass $book Book record.
      * @param string $modulepath Stable module path.
      * @param string $displayname Display name.
      * @param int $cmid Course module id.
      * @return void
      */
-    private function collect_book(array &$items, \stdClass $book, string $modulepath, string $displayname, int $cmid): void {
+    private function collect_book(array &$items, stdClass $book, string $modulepath, string $displayname, int $cmid): void {
         global $DB;
 
         $chapters = array_values($DB->get_records('book_chapters', ['bookid' => $book->id], 'pagenum ASC, id ASC'));
@@ -262,13 +277,13 @@ class collector {
      * no single question definition to translate safely.
      *
      * @param array $items Result accumulator.
-     * @param \stdClass $quiz Quiz record.
+     * @param stdClass $quiz Quiz record.
      * @param string $modulepath Stable module path.
      * @param string $displayname Display name.
      * @param int $cmid Course module id.
      * @return void
      */
-    private function collect_quiz(array &$items, \stdClass $quiz, string $modulepath, string $displayname, int $cmid): void {
+    private function collect_quiz(array &$items, stdClass $quiz, string $modulepath, string $displayname, int $cmid): void {
         global $DB;
 
         $sections = $DB->get_records('quiz_sections', ['quizid' => $quiz->id], 'firstslot ASC');
@@ -304,8 +319,8 @@ class collector {
             }
             $question = $this->resolve_question($reference);
             if (!$question || !in_array($question->qtype, [
-                'multichoice', 'truefalse', 'shortanswer', 'numerical', 'essay', 'match',
-            ], true)) {
+                    'multichoice', 'truefalse', 'shortanswer', 'numerical', 'essay', 'match',
+                ], true)) {
                 continue;
             }
             $this->collect_question(
@@ -321,10 +336,10 @@ class collector {
     /**
      * Resolve a fixed question reference to the version actually used.
      *
-     * @param \stdClass $reference question_references row.
-     * @return \stdClass|null
+     * @param stdClass $reference question_references row.
+     * @return stdClass|null
      */
-    private function resolve_question(\stdClass $reference): ?\stdClass {
+    private function resolve_question(stdClass $reference): ?stdClass {
         global $DB;
 
         if ($reference->version !== null) {
@@ -354,27 +369,27 @@ class collector {
      * Collect fields for a supported question type.
      *
      * @param array $items Result accumulator.
-     * @param \stdClass $question Question row.
+     * @param stdClass $question Question row.
      * @param string $questionpath Stable path based on quiz slot.
      * @param string $label Human-readable label.
      * @param int $cmid Quiz course-module id.
      * @return void
      */
     private function collect_question(
-        array &$items,
-        \stdClass $question,
-        string $questionpath,
-        string $label,
-        int $cmid
+        array     &$items,
+        stdClass $question,
+        string    $questionpath,
+        string    $label,
+        int       $cmid
     ): void {
         global $DB;
 
         $metadata = ['questionid' => (int)$question->id, 'qtype' => (string)$question->qtype, 'cmid' => $cmid];
         foreach ([
-            ['name', FORMAT_PLAIN],
-            ['questiontext', (int)$question->questiontextformat],
-            ['generalfeedback', (int)$question->generalfeedbackformat],
-        ] as [$field, $format]) {
+                     ['name', FORMAT_PLAIN],
+                     ['questiontext', (int)$question->questiontextformat],
+                     ['generalfeedback', (int)$question->generalfeedbackformat],
+                 ] as [$field, $format]) {
             if (trim(strip_tags((string)$question->{$field})) === '') {
                 continue;
             }
@@ -395,7 +410,7 @@ class collector {
         $answers = array_values($DB->get_records('question_answers', ['question' => $question->id], 'id ASC'));
         foreach ($answers as $index => $answer) {
             if (in_array($question->qtype, ['multichoice', 'shortanswer'], true) &&
-                    trim(strip_tags((string)$answer->answer)) !== '' && !$this->looks_numeric((string)$answer->answer)) {
+                trim(strip_tags((string)$answer->answer)) !== '' && !$this->looks_numeric((string)$answer->answer)) {
                 $this->add($items, [
                     'path' => $questionpath . '/answer/' . $index . '/answer',
                     'component' => 'core_question',
@@ -494,9 +509,9 @@ class collector {
             ], 'id ASC'));
             foreach ($subquestions as $index => $subquestion) {
                 foreach ([
-                    ['questiontext', (int)$subquestion->questiontextformat],
-                    ['answertext', FORMAT_PLAIN],
-                ] as [$field, $format]) {
+                             ['questiontext', (int)$subquestion->questiontextformat],
+                             ['answertext', FORMAT_PLAIN],
+                         ] as [$field, $format]) {
                     if (trim(strip_tags((string)$subquestion->{$field})) === '') {
                         continue;
                     }
@@ -523,18 +538,18 @@ class collector {
      * explicitly excluded from AI payloads.
      *
      * @param array $items Result accumulator.
-     * @param \stdClass $glossary Glossary record.
+     * @param stdClass $glossary Glossary record.
      * @param string $modulepath Stable module path.
      * @param string $displayname Display name.
      * @param int $cmid Course module id.
      * @return void
      */
     private function collect_glossary_entries(
-        array &$items,
-        \stdClass $glossary,
-        string $modulepath,
-        string $displayname,
-        int $cmid
+        array     &$items,
+        stdClass $glossary,
+        string    $modulepath,
+        string    $displayname,
+        int       $cmid
     ): void {
         global $DB;
 

@@ -1,12 +1,39 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * action.php
+ *
+ * @package   local_coursetranslate
+ * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+use core\output\notification;
+use local_coursetranslate\local\apply_service;
+use local_coursetranslate\local\copy_service;
+use local_coursetranslate\local\job_service;
+use local_coursetranslate\local\translation\translator;
 
 require_once(__DIR__ . '/../../config.php');
 
 $jobid = required_param('jobid', PARAM_INT);
 $action = required_param('action', PARAM_ALPHANUMEXT);
 require_sesskey();
-$job = \local_coursetranslate\local\job_service::get_job($jobid);
+$job = job_service::get_job($jobid);
 $course = get_course($job->courseid);
 require_login($course);
 require_capability('local/coursetranslate:translate', context_course::instance($course->id));
@@ -14,29 +41,29 @@ $itemids = optional_param_array('itemids', [], PARAM_INT);
 $viewurl = new moodle_url('/local/coursetranslate/view.php', ['id' => $jobid]);
 
 if ($action === 'translate_pending') {
-    $result = (new \local_coursetranslate\local\translation\translator())->translate($jobid, null);
+    $result = (new translator())->translate($jobid, null);
     $message = get_string('translatedcount', 'local_coursetranslate', $result['translated']);
     if ($result['partial']) {
         $message .= ' ' . get_string('translationpartial', 'local_coursetranslate');
     }
-    redirect($viewurl, $message, null, \core\output\notification::NOTIFY_SUCCESS);
+    redirect($viewurl, $message, null, notification::NOTIFY_SUCCESS);
 }
 
 if ($action === 'translate_selected') {
     if (!$itemids) {
-        redirect($viewurl, get_string('nonelected', 'local_coursetranslate'), null, \core\output\notification::NOTIFY_WARNING);
+        redirect($viewurl, get_string('nonelected', 'local_coursetranslate'), null, notification::NOTIFY_WARNING);
     }
-    $result = (new \local_coursetranslate\local\translation\translator())->translate($jobid, $itemids);
+    $result = (new translator())->translate($jobid, $itemids);
     $message = get_string('translatedcount', 'local_coursetranslate', $result['translated']);
     if ($result['partial']) {
         $message .= ' ' . get_string('translationpartial', 'local_coursetranslate');
     }
-    redirect($viewurl, $message, null, \core\output\notification::NOTIFY_SUCCESS);
+    redirect($viewurl, $message, null, notification::NOTIFY_SUCCESS);
 }
 
 if ($action === 'apply_selected') {
     if (!$itemids) {
-        redirect($viewurl, get_string('nonelected', 'local_coursetranslate'), null, \core\output\notification::NOTIFY_WARNING);
+        redirect($viewurl, get_string('nonelected', 'local_coursetranslate'), null, notification::NOTIFY_WARNING);
     }
     $confirm = optional_param('confirm', 0, PARAM_BOOL);
     if (!$confirm) {
@@ -52,17 +79,17 @@ if ($action === 'apply_selected') {
         echo $OUTPUT->footer();
         exit;
     }
-    $result = (new \local_coursetranslate\local\apply_service())->apply_original($jobid, $itemids);
+    $result = (new apply_service())->apply_original($jobid, $itemids);
     $message = get_string('applied', 'local_coursetranslate', $result['applied']);
     if ($result['skipped']) {
         $message .= ' ' . get_string('applyskipwarning', 'local_coursetranslate', $result['skipped']);
     }
-    redirect($viewurl, $message, null, \core\output\notification::NOTIFY_SUCCESS);
+    redirect($viewurl, $message, null, notification::NOTIFY_SUCCESS);
 }
 
 if ($action === 'copy_selected') {
     if (!$itemids) {
-        redirect($viewurl, get_string('nonelected', 'local_coursetranslate'), null, \core\output\notification::NOTIFY_WARNING);
+        redirect($viewurl, get_string('nonelected', 'local_coursetranslate'), null, notification::NOTIFY_WARNING);
     }
     $confirm = optional_param('confirm', 0, PARAM_BOOL);
     if (!$confirm) {
@@ -71,8 +98,8 @@ if ($action === 'copy_selected') {
         $PAGE->set_url(new moodle_url('/local/coursetranslate/action.php'));
         $PAGE->set_title(get_string('confirmcopy', 'local_coursetranslate'));
         $PAGE->set_heading(format_string($course->fullname));
-        $fullname = \local_coursetranslate\local\copy_service::suggest_fullname($job);
-        $shortname = \local_coursetranslate\local\copy_service::suggest_shortname($course, $job->targetlang);
+        $fullname = copy_service::suggest_fullname($job);
+        $shortname = copy_service::suggest_shortname($course, $job->targetlang);
         echo $OUTPUT->header();
         echo $OUTPUT->heading(get_string('confirmcopy', 'local_coursetranslate'));
         echo $OUTPUT->notification(get_string('confirmcopytext', 'local_coursetranslate'), 'info');
@@ -87,13 +114,13 @@ if ($action === 'copy_selected') {
 
     $fullname = required_param('copyfullname', PARAM_TEXT);
     $shortname = required_param('copyshortname', PARAM_TEXT);
-    $result = (new \local_coursetranslate\local\copy_service())->create($jobid, $itemids, $fullname, $shortname);
+    $result = (new copy_service())->create($jobid, $itemids, $fullname, $shortname);
     $copyurl = new moodle_url('/course/view.php', ['id' => $result['courseid']]);
     $message = get_string('copycreated', 'local_coursetranslate') . ' ' . get_string('applied', 'local_coursetranslate', $result['applied']);
     if ($result['skipped']) {
         $message .= ' ' . get_string('copyapplywarning', 'local_coursetranslate', $result['skipped']);
     }
-    redirect($copyurl, $message, null, \core\output\notification::NOTIFY_SUCCESS);
+    redirect($copyurl, $message, null, notification::NOTIFY_SUCCESS);
 }
 
 redirect($viewurl);
