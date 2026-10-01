@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_coursetranslate\local\content;
+namespace local_coursetranslate\content;
 
 use cm_info;
 use context_module;

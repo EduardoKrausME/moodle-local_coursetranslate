@@ -17,14 +17,14 @@
 namespace local_coursetranslate;
 
 use advanced_testcase;
-use local_coursetranslate\local\translation\translator;
+use local_coursetranslate\translation\translator;
 use moodle_exception;
 
 /**
  * AI response parsing tests.
  *
  * @package local_coursetranslate
- * @covers \local_coursetranslate\local\translation\translator
+ * @covers \local_coursetranslate\translation\translator
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

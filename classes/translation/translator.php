@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_coursetranslate\local\translation;
+namespace local_coursetranslate\translation;
 
 use core_text;
 use local_ai_bridge\api;
-use local_coursetranslate\local\job_service;
-use local_coursetranslate\local\token\protector;
+use local_coursetranslate\job_service;
+use local_coursetranslate\token\protector;
 use moodle_exception;
 use stdClass;
 use Throwable;

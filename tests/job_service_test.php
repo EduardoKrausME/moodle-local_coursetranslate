@@ -17,14 +17,14 @@
 namespace local_coursetranslate;
 
 use advanced_testcase;
-use local_coursetranslate\local\job_service;
+use local_coursetranslate\job_service;
 use moodle_exception;
 
 /**
  * Pure job helper tests.
  *
  * @package local_coursetranslate
- * @covers \local_coursetranslate\local\job_service
+ * @covers \local_coursetranslate\job_service
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

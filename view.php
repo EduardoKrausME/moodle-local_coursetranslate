@@ -22,7 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_coursetranslate\local\job_service;
+use local_coursetranslate\job_service;
 
 require_once(__DIR__ . '/../../config.php');
 

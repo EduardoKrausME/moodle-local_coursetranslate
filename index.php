@@ -24,7 +24,7 @@
 
 use core\output\notification;
 use local_coursetranslate\form\start_form;
-use local_coursetranslate\local\job_service;
+use local_coursetranslate\job_service;
 
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir . '/formslib.php');

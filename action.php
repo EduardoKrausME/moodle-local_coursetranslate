@@ -23,10 +23,10 @@
  */
 
 use core\output\notification;
-use local_coursetranslate\local\apply_service;
-use local_coursetranslate\local\copy_service;
-use local_coursetranslate\local\job_service;
-use local_coursetranslate\local\translation\translator;
+use local_coursetranslate\apply_service;
+use local_coursetranslate\copy_service;
+use local_coursetranslate\job_service;
+use local_coursetranslate\translation\translator;
 
 require_once(__DIR__ . '/../../config.php');
 

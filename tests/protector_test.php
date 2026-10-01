@@ -17,14 +17,14 @@
 namespace local_coursetranslate;
 
 use advanced_testcase;
-use local_coursetranslate\local\token\protector;
+use local_coursetranslate\token\protector;
 use moodle_exception;
 
 /**
  * Token protection tests.
  *
  * @package local_coursetranslate
- * @covers \local_coursetranslate\local\token\protector
+ * @covers \local_coursetranslate\token\protector
  * @copyright 2026 Eduardo Kraus {@link https://eduardokraus.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

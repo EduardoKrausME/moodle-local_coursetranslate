@@ -16,7 +16,7 @@
 
 namespace local_coursetranslate\form;
 
-use local_coursetranslate\local\job_service;
+use local_coursetranslate\job_service;
 use moodleform;
 use Throwable;
 

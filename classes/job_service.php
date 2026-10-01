@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace local_coursetranslate\local;
+namespace local_coursetranslate;
 
 use context_course;
-use local_coursetranslate\local\content\collector;
+use local_coursetranslate\content\collector;
 use moodle_exception;
 use stdClass;
 
