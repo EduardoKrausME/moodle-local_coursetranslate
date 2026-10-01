@@ -116,7 +116,8 @@ if ($action === 'copy_selected') {
     $shortname = required_param('copyshortname', PARAM_TEXT);
     $result = (new copy_service())->create($jobid, $itemids, $fullname, $shortname);
     $copyurl = new moodle_url('/course/view.php', ['id' => $result['courseid']]);
-    $message = get_string('copycreated', 'local_coursetranslate') . ' ' . get_string('applied', 'local_coursetranslate', $result['applied']);
+    $message = get_string('copycreated', 'local_coursetranslate') . ' ' .
+        get_string('applied', 'local_coursetranslate', $result['applied']);
     if ($result['skipped']) {
         $message .= ' ' . get_string('copyapplywarning', 'local_coursetranslate', $result['skipped']);
     }
@@ -134,7 +135,12 @@ redirect($viewurl);
  * @param array $fields Optional editable copy fields.
  * @return string
  */
-function local_coursetranslate_confirmation_form(int $jobid, string $action, array $itemids, array $fields): string {
+function local_coursetranslate_confirmation_form(
+    int $jobid,
+    string $action,
+    array $itemids,
+    array $fields
+): string {
     $url = new moodle_url('/local/coursetranslate/action.php');
     $html = html_writer::start_tag('form', ['method' => 'post', 'action' => $url->out(false)]);
     $html .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'jobid', 'value' => $jobid]);
@@ -146,14 +152,24 @@ function local_coursetranslate_confirmation_form(int $jobid, string $action, arr
     }
     if (isset($fields['copyfullname'])) {
         $html .= html_writer::start_div('mb-3');
-        $html .= html_writer::label(get_string('copyfullname', 'local_coursetranslate'), 'id_copyfullname', false, ['class' => 'form-label']);
+        $html .= html_writer::label(
+            get_string('copyfullname', 'local_coursetranslate'),
+            'id_copyfullname',
+            false,
+            ['class' => 'form-label']
+        );
         $html .= html_writer::empty_tag('input', [
             'id' => 'id_copyfullname', 'class' => 'form-control', 'type' => 'text', 'name' => 'copyfullname',
             'value' => $fields['copyfullname'], 'required' => 'required',
         ]);
         $html .= html_writer::end_div();
         $html .= html_writer::start_div('mb-3');
-        $html .= html_writer::label(get_string('copyshortname', 'local_coursetranslate'), 'id_copyshortname', false, ['class' => 'form-label']);
+        $html .= html_writer::label(
+            get_string('copyshortname', 'local_coursetranslate'),
+            'id_copyshortname',
+            false,
+            ['class' => 'form-label']
+        );
         $html .= html_writer::empty_tag('input', [
             'id' => 'id_copyshortname', 'class' => 'form-control', 'type' => 'text', 'name' => 'copyshortname',
             'value' => $fields['copyshortname'], 'required' => 'required',
@@ -161,7 +177,11 @@ function local_coursetranslate_confirmation_form(int $jobid, string $action, arr
         $html .= html_writer::end_div();
     }
     $html .= html_writer::tag('button', get_string('continue'), ['type' => 'submit', 'class' => 'btn btn-primary me-2']);
-    $html .= html_writer::link(new moodle_url('/local/coursetranslate/view.php', ['id' => $jobid]), get_string('cancel'), ['class' => 'btn btn-secondary']);
+    $html .= html_writer::link(
+        new moodle_url('/local/coursetranslate/view.php', ['id' => $jobid]),
+        get_string('cancel'),
+        ['class' => 'btn btn-secondary']
+    );
     $html .= html_writer::end_tag('form');
     return $html;
 }
