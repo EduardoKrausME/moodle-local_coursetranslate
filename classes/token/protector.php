@@ -18,9 +18,9 @@ namespace local_coursetranslate\token;
 
 use moodle_exception;
 
-// php:disable moodle.Files.LineLength.MaxExceeded
-// php:disable moodle.Strings.ForbiddenStrings.Found
-// php:disable moodle.Commenting.InlineComment.InvalidEndChar
+// phpcs:disable moodle.Files.LineLength.MaxExceeded
+// phpcs:disable moodle.Strings.ForbiddenStrings.Found
+// phpcs:disable moodle.Commenting.InlineComment.InvalidEndChar
 
 /**
  * Protect non-translatable structures before text is sent to AI.
