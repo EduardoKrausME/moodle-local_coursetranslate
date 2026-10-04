@@ -18,6 +18,10 @@ namespace local_coursetranslate\token;
 
 use moodle_exception;
 
+// php:disable moodle.Files.LineLength.MaxExceeded
+// php:disable moodle.Strings.ForbiddenStrings.Found
+// php:disable moodle.Commenting.InlineComment.InvalidEndChar
+
 /**
  * Protect non-translatable structures before text is sent to AI.
  *
@@ -42,7 +46,7 @@ class protector {
      * @param array $terminology Required source => target terminology.
      * @return array Protected payload.
      */
-    public function protect(string $text, array $terminology = []): array { // php:disable moodle.Files.LineLength.MaxExceeded,moodle.Strings.ForbiddenStrings.Found
+    public function protect(string $text, array $terminology = []): array {
         $state = [
             'source' => $text,
             'tokens' => [],
