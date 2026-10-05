@@ -16,6 +16,10 @@
 
 namespace local_coursetranslate\form;
 
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->libdir . '/formslib.php');
+
 use local_coursetranslate\job_service;
 use moodleform;
 use Throwable;
