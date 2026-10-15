@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'local_coursetranslate';
-$plugin->version = 2026101200;
-$plugin->release = '1.1.2';
+$plugin->version = 2026101500;
+$plugin->release = '1.1.3';
 $plugin->requires = 2024100700;
 $plugin->maturity = MATURITY_STABLE;
 $plugin->dependencies = [
