@@ -32,6 +32,8 @@ use local_mcp\extension\write_provider_interface;
  */
 final class provider implements read_provider_interface, write_provider_interface {
     /**
+     * Register the available course translation read tools.
+     *
      * @return array
      */
     public function get_read_tools(): array {
@@ -39,6 +41,8 @@ final class provider implements read_provider_interface, write_provider_interfac
     }
 
     /**
+     * Register the available confirmed translation write tools.
+     *
      * @return array
      */
     public function get_write_tools(): array {

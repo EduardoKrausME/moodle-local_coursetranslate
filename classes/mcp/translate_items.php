@@ -35,6 +35,8 @@ final class translate_items extends write_base {
     public const MAX_ITEMS = 8;
 
     /**
+     * Return the unique MCP tool name.
+     *
      * @return string
      */
     public function get_name(): string {
@@ -42,6 +44,8 @@ final class translate_items extends write_base {
     }
 
     /**
+     * Return the translated MCP tool title.
+     *
      * @return string
      */
     public function get_title(): string {
@@ -49,6 +53,8 @@ final class translate_items extends write_base {
     }
 
     /**
+     * Return the translated description of this tool.
+     *
      * @return string
      */
     public function get_description(): string {
@@ -56,6 +62,8 @@ final class translate_items extends write_base {
     }
 
     /**
+     * Declare the valid arguments for the MCP tool.
+     *
      * @return array
      */
     public function get_input_schema(): array {
@@ -65,6 +73,8 @@ final class translate_items extends write_base {
     }
 
     /**
+     * Describe the requested translation action without side effects.
+     *
      * @param array $arguments Input.
      * @param authenticated_identity $identity Connected user.
      * @return array
@@ -86,6 +96,8 @@ final class translate_items extends write_base {
     }
 
     /**
+     * Execute the authorized translation operation.
+     *
      * @param array $arguments Input.
      * @param authenticated_identity $identity Connected user.
      * @return array

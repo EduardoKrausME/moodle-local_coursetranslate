@@ -54,9 +54,10 @@ final class mcp_tools_test extends advanced_testcase {
      * @return array
      */
     private function make_job(): array {
+        global $USER;
         $this->setAdminUser();
         $course = $this->getDataGenerator()->create_course(["fullname" => "English course"]);
-        $jobid = job_service::create((int)$course->id, (int)$this->getUser()->id, [
+        $jobid = job_service::create((int)$course->id, (int)$USER->id, [
             "sourcelang" => "en",
             "targetlang" => "pt_br",
             "coursefullname" => true,
@@ -127,12 +128,12 @@ final class mcp_tools_test extends advanced_testcase {
      * @return void
      */
     public function test_mcp_reads_and_previews_have_no_side_effects(): void {
-        global $DB;
+        global $DB, $USER;
         $this->resetAfterTest();
         $this->require_mcp();
         [$course, $jobid] = $this->make_job();
         $identity = new \local_mcp\security\authenticated_identity(
-            (int)$this->getUser()->id, "oauth", ["read", "write"]
+            (int)$USER->id, "oauth", ["read", "write"]
         );
         $job = (new get_job())->execute(["jobid" => $jobid], $identity);
         $this->assertGreaterThan(0, $job["total"]);
@@ -163,7 +164,7 @@ final class mcp_tools_test extends advanced_testcase {
      * @return void
      */
     public function test_apply_preview_does_not_modify_original(): void {
-        global $DB;
+        global $DB, $USER;
         $this->resetAfterTest();
         $this->require_mcp();
         [$course, $jobid] = $this->make_job();
@@ -175,7 +176,7 @@ final class mcp_tools_test extends advanced_testcase {
             hash("sha256", "Curso traduzido"), ["id" => $item->id]);
         $DB->set_field("local_coursetranslate_item", "state", "translated", ["id" => $item->id]);
         $identity = new \local_mcp\security\authenticated_identity(
-            (int)$this->getUser()->id, "oauth", ["read", "write"]
+            (int)$USER->id, "oauth", ["read", "write"]
         );
         $before = $DB->get_field("course", "fullname", ["id" => $course->id]);
         $snapshot = (new get_job())->execute(["jobid" => $jobid], $identity);

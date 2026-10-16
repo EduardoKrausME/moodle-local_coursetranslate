@@ -34,6 +34,8 @@ use local_mcp\write\tool\base_tool;
  */
 abstract class write_base extends base_tool {
     /**
+     * Return the Moodle capability required for this tool.
+     *
      * @return string
      */
     public function get_required_capability(): string {
@@ -41,6 +43,8 @@ abstract class write_base extends base_tool {
     }
 
     /**
+     * Resolve the Moodle context of the requested translation job or course.
+     *
      * @param array $arguments Input.
      * @return context
      */
@@ -52,6 +56,8 @@ abstract class write_base extends base_tool {
     }
 
     /**
+     * Validate the job state and selected field identifiers.
+     *
      * @param array $arguments Input.
      * @param authenticated_identity $identity Authenticated user.
      * @return array

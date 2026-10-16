@@ -37,6 +37,8 @@ use moodle_url;
  */
 final class create_job extends base_tool {
     /**
+     * Return the unique MCP tool name.
+     *
      * @return string
      */
     public function get_name(): string {
@@ -44,6 +46,8 @@ final class create_job extends base_tool {
     }
 
     /**
+     * Return the translated MCP tool title.
+     *
      * @return string
      */
     public function get_title(): string {
@@ -51,6 +55,8 @@ final class create_job extends base_tool {
     }
 
     /**
+     * Return the translated description of this tool.
+     *
      * @return string
      */
     public function get_description(): string {
@@ -58,6 +64,8 @@ final class create_job extends base_tool {
     }
 
     /**
+     * Return the Moodle capability required for this tool.
+     *
      * @return string
      */
     public function get_required_capability(): string {
@@ -65,6 +73,8 @@ final class create_job extends base_tool {
     }
 
     /**
+     * Declare the valid arguments for the MCP tool.
+     *
      * @return array
      */
     public function get_input_schema(): array {
@@ -82,6 +92,8 @@ final class create_job extends base_tool {
     }
 
     /**
+     * Resolve the Moodle context of the requested translation job or course.
+     *
      * @param array $arguments Input.
      * @return context
      */
@@ -134,6 +146,8 @@ final class create_job extends base_tool {
     }
 
     /**
+     * Execute the authorized MCP operation.
+     *
      * @param array $arguments Input.
      * @param authenticated_identity $identity Connected user.
      * @return array

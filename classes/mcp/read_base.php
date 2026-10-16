@@ -33,6 +33,8 @@ use local_mcp\read\tool\base_tool;
  */
 abstract class read_base extends base_tool {
     /**
+     * Return the Moodle capability required for this tool.
+     *
      * @return string
      */
     public function get_required_capability(): string {
@@ -40,6 +42,8 @@ abstract class read_base extends base_tool {
     }
 
     /**
+     * Resolve the Moodle context of the requested translation job or course.
+     *
      * @param array $arguments Tool arguments.
      * @return context
      */

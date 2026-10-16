@@ -35,6 +35,8 @@ final class job_snapshot {
     public const MAX_PAGE = 40;
 
     /**
+     * Inspect translation progress and build a concurrency snapshot.
+     *
      * @param stdClass $job Job record.
      * @return array
      */

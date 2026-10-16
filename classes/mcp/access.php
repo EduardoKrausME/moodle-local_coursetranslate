@@ -34,6 +34,8 @@ use stdClass;
  */
 final class access {
     /**
+     * Load a Moodle course and check the connected user's permissions.
+     *
      * @param int $courseid Course identifier.
      * @param authenticated_identity $identity Authenticated user.
      * @return stdClass
@@ -46,6 +48,8 @@ final class access {
     }
 
     /**
+     * Load an authorized translation job.
+     *
      * @param int $jobid Translation job identifier.
      * @param authenticated_identity $identity Authenticated user.
      * @return stdClass
