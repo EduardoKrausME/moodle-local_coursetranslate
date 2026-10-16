@@ -132,3 +132,52 @@ user ID on deletion while preserving the course translation work. AI Bridge has 
 
 - `local_coursetranslate_job`: course, creator, language pair, terminology, options and copy reference.
 - `local_coursetranslate_item`: stable key, source snapshot/hash, translated text/hash, state, locator and metadata.
+
+
+## Optional MCP integration (ChatGPT)
+
+When [local_mcp](https://github.com/EduardoKrausME/moodle-local_mcp) is enabled, it discovers
+`local_coursetranslate\mcp\provider` from `classes/mcp/provider.php` automatically.
+This is an optional integration without a hard `version.php` dependency,
+an additional MCP server, or a legacy `lib.php` callback.
+
+The provider exposes seven tools:
+
+| Tool | Scope | Behavior |
+| --- | --- | --- |
+| `coursetranslate_list_jobs` | READ | List course jobs and their status, with pagination. |
+| `coursetranslate_get_job` | READ | Inspect a job, all live field statuses, a current state hash, and paginated field metadata. |
+| `coursetranslate_get_field` | READ | Inspect the original and translated text of one item in character-bounded chunks. |
+| `coursetranslate_create_job` | WRITE | Create a new snapshot with a source/target language pair, optional course fields, glossary entries, and required terminology. |
+| `coursetranslate_translate_items` | WRITE | Translate up to eight explicitly selected item IDs in one confirmed call using `local_ai_bridge`. |
+| `coursetranslate_apply_original` | WRITE (destructive) | Apply explicitly selected, current translations to the original course using the native allowlist and skip versioned question-bank records. |
+| `coursetranslate_create_copy` | WRITE | Create a hidden translated copy through Moodle backup/restore, preserving the original. |
+
+The Moodle capability `local/coursetranslate:translate` is required in the corresponding
+course context for **all** tools, alongside the MCP READ or WRITE scope.
+Course-copy actions additionally require Moodle course creation and backup capabilities.
+Authorized teachers can view existing jobs in the course, as with the native Moodle job list;
+the tools never provide student submissions, grades, forum posts or quiz attempts.
+
+All WRITE operations use `local_mcp`'s one-time confirmation flow. Previews never
+change the database, contact an AI provider or create a backup. The creation preview
+shows the proposed source/target languages and field count; the translation preview
+identifies selected fields and potential AI-credit usage; application and duplication
+previews explicitly identify the target course and affected items.
+
+Before calling any job-based WRITE tool, call `coursetranslate_get_job` and pass its
+`state_hash` as `expected_state_hash`. The server rejects stale hashes both during
+preview and execution, including edits to source course fields or saved translations.
+All selected `itemids` must belong to the job; unexpected or duplicate IDs are refused.
+Review item contents with `coursetranslate_get_field` before applying them, because
+the result of machine translation still requires a human quality check.
+
+Original-course application retains the existing safety restrictions and skips changed
+or question-bank fields rather than bypassing Moodle question versioning. Translated
+course copies are always created hidden for review before publication, and the MCP copy
+tool refuses to create a second copy from a job already linked to a translated copy.
+
+Responses are bounded to 40 job items per page, 12,000 characters per field read and
+eight AI-translated items per confirmed request. No database migration is required to
+enable this integration. After updating the Moodle plugin, refresh the ChatGPT MCP
+connector to discover the new tools.
