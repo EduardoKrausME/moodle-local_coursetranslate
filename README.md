@@ -136,7 +136,7 @@ user ID on deletion while preserving the course translation work. AI Bridge has 
 
 ## Optional MCP integration (ChatGPT)
 
-When [local_mcp](https://github.com/EduardoKrausME/moodle-local_mcp) is enabled, it discovers
+When [local_mcp](https://eduardokrausme.github.io/moodle-local_mcp/) is enabled, it discovers
 `local_coursetranslate\mcp\provider` from `classes/mcp/provider.php` automatically.
 This is an optional integration without a hard `version.php` dependency,
 an additional MCP server, or a legacy `lib.php` callback.
