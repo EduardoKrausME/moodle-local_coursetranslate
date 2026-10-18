@@ -38,6 +38,8 @@ require_capability('local/coursetranslate:translate', $context);
 $PAGE->set_context($context);
 $PAGE->set_course($course);
 $PAGE->set_url(new moodle_url('/local/coursetranslate/index.php', ['courseid' => $courseid]));
+
+\local_coursetranslate\mcp_banner::dismiss_if_requested($PAGE->url);
 $PAGE->set_title(get_string('pluginname', 'local_coursetranslate'));
 $PAGE->set_heading(format_string($course->fullname));
 
@@ -58,6 +60,10 @@ if ($form->is_cancelled()) {
 }
 
 echo $OUTPUT->header();
+if (\local_coursetranslate\mcp_banner::should_show()) {
+    echo \local_coursetranslate\mcp_banner::render($OUTPUT, $PAGE->url);
+}
+
 echo $OUTPUT->heading(get_string('pluginname', 'local_coursetranslate'));
 echo $OUTPUT->notification(get_string('onlycoursecontent', 'local_coursetranslate'), 'info');
 $form->display();
