@@ -93,15 +93,15 @@ final class get_field extends read_base {
             "jobid" => (int)$job->id,
             "itemid" => (int)$item->id,
             "status" => job_service::display_status($item, $current[$item->localkey] ?? null),
-            "source_length" => \core_text::strlen($source),
-            "translated_length" => \core_text::strlen($translated),
+            "source_length" => strlen($source),
+            "translated_length" => strlen($translated),
             "offset" => $offset,
             "length" => $length,
-            "source" => \core_text::substr($source, $offset, $length),
+            "source" => substr($source, $offset, $length),
             "translation" => $item->translatedvalue === null
-                ? null : \core_text::substr($translated, $offset, $length),
-            "has_more_source" => $offset + $length < \core_text::strlen($source),
-            "has_more_translation" => $offset + $length < \core_text::strlen($translated),
+                ? null : substr($translated, $offset, $length),
+            "has_more_source" => $offset + $length < strlen($source),
+            "has_more_translation" => $offset + $length < strlen($translated),
         ];
     }
 }

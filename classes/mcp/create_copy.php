@@ -88,8 +88,8 @@ final class create_copy extends write_base {
         }
         $fullname = trim(clean_param((string)$arguments["fullname"], PARAM_TEXT));
         $shortname = trim(clean_param((string)$arguments["shortname"], PARAM_TEXT));
-        if ($fullname === "" || $shortname === "" || \core_text::strlen($fullname) > 254 ||
-                \core_text::strlen($shortname) > 100) {
+        if ($fullname === "" || $shortname === "" || strlen($fullname) > 254 ||
+                strlen($shortname) > 100) {
             throw new \moodle_exception("mcpinvalidcopyname", "local_coursetranslate");
         }
         if ($DB->record_exists("course", ["shortname" => $shortname])) {

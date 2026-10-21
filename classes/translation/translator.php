@@ -16,7 +16,6 @@
 
 namespace local_coursetranslate\translation;
 
-use core_text;
 use local_ai_bridge\api;
 use local_coursetranslate\job_service;
 use local_coursetranslate\token\protector;
@@ -274,7 +273,7 @@ class translator {
     private function fail_item(stdClass $item, string $message): void {
         global $DB;
         $item->state = 'failed';
-        $item->errormessage = core_text::substr($message, 0, 4000);
+        $item->errormessage = substr($message, 0, 4000);
         $item->timemodified = time();
         $DB->update_record('local_coursetranslate_item', $item);
     }

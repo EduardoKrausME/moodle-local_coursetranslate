@@ -19,7 +19,6 @@ namespace local_coursetranslate;
 use context_course;
 use context_coursecat;
 use core_course_external;
-use core_text;
 use moodle_exception;
 use stdClass;
 
@@ -109,11 +108,11 @@ class copy_service {
         global $DB;
 
         $base = trim((string)$course->shortname) . '-' . $targetlang;
-        $base = core_text::substr($base, 0, 240);
+        $base = substr($base, 0, 240);
         $candidate = $base;
         $counter = 2;
         while ($DB->record_exists('course', ['shortname' => $candidate])) {
-            $candidate = core_text::substr($base, 0, 235) . '-' . $counter++;
+            $candidate = substr($base, 0, 235) . '-' . $counter++;
         }
         return $candidate;
     }
