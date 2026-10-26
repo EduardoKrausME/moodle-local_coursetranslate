@@ -133,7 +133,6 @@ user ID on deletion while preserving the course translation work. AI Bridge has 
 - `local_coursetranslate_job`: course, creator, language pair, terminology, options and copy reference.
 - `local_coursetranslate_item`: stable key, source snapshot/hash, translated text/hash, state, locator and metadata.
 
-
 ## Optional MCP integration (ChatGPT)
 
 When [local_mcp](https://eduardokrausme.github.io/moodle-local_mcp/) is enabled, it discovers
